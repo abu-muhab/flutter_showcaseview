@@ -133,7 +133,7 @@ class Showcase extends StatefulWidget {
     required this.width,
     this.title,
     this.description,
-    required this.descriptionAlignment,
+    this.descriptionAlignment = ShowcaseDecriptionAlignment.left,
     this.shapeBorder,
     this.overlayColor = Colors.black45,
     this.radius,
