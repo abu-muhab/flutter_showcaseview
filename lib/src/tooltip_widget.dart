@@ -24,6 +24,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../showcaseview.dart';
 import 'get_position.dart';
 import 'measure_size.dart';
 
@@ -35,6 +36,7 @@ class ToolTipWidget extends StatefulWidget {
   final Size? screenSize;
   final String? title;
   final String? description;
+  final ShowcaseDecriptionAlignment? descriptionAlignment;
   final TextStyle? titleTextStyle;
   final TextStyle? descTextStyle;
   final Widget? container;
@@ -66,6 +68,7 @@ class ToolTipWidget extends StatefulWidget {
     required this.contentWidth,
     required this.onTooltipTap,
     required this.animationDuration,
+    required this.descriptionAlignment,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
     required this.disableAnimation,
     required this.borderRadius,
@@ -330,7 +333,15 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                                           )
                                         : const SizedBox(),
                                     Text(
-                                      widget.description!,
+                                      _alignedText(
+                                          widget.description!,
+                                          widget.descTextStyle ??
+                                              Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2!
+                                                  .merge(TextStyle(
+                                                      color:
+                                                          widget.textColor))),
                                       style: widget.descTextStyle ??
                                           Theme.of(context)
                                               .textTheme
@@ -404,9 +415,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
   }
 
   Size _textSize(String text, TextStyle style) {
-    final String longestLine = text.split('\n').reduce(
-        (String value, String element) =>
-            value.length > element.length ? value : element);
+    final String longestLine = text
+        .split('\n')
+        .reduce((String a, String b) => a.length > b.length ? a : b);
     final textPainter = (TextPainter(
             text: TextSpan(text: longestLine, style: style),
             maxLines: 1,
@@ -415,6 +426,41 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
           ..layout())
         .size;
     return textPainter;
+  }
+
+  String _alignedText(String text, TextStyle style) {
+    if (widget.descriptionAlignment == ShowcaseDecriptionAlignment.none) {
+      return text;
+    }
+
+    final Size textSize = _textSize(text, style);
+    final double maxWidth = textSize.width;
+    final double widthOfSingleSpace = _textSize(' ', style).width;
+
+    final List<String> alignedLines = text.split("\n").map(
+      (String line) {
+        final double lineWidth = _textSize(line, style).width;
+
+        final excessSpace = maxWidth - lineWidth;
+        final numberOfSpaces = (excessSpace / widthOfSingleSpace).round();
+
+        if (widget.descriptionAlignment == ShowcaseDecriptionAlignment.center) {
+          return line
+              .padLeft(line.length + numberOfSpaces ~/ 2)
+              .padRight(line.length + numberOfSpaces - numberOfSpaces ~/ 2);
+        } else if (widget.descriptionAlignment ==
+            ShowcaseDecriptionAlignment.left) {
+          return line.padRight(line.length + numberOfSpaces);
+        } else if (widget.descriptionAlignment ==
+            ShowcaseDecriptionAlignment.right) {
+          return line.padLeft(line.length + numberOfSpaces);
+        } else {
+          return line;
+        }
+      },
+    ).toList();
+
+    return alignedLines.join("\n");
   }
 }
 
