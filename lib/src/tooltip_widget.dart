@@ -333,15 +333,19 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                                           )
                                         : const SizedBox(),
                                     Text(
-                                      _alignedText(
-                                          widget.description!,
-                                          widget.descTextStyle ??
-                                              Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2!
-                                                  .merge(TextStyle(
-                                                      color:
-                                                          widget.textColor))),
+                                      widget.description!,
+                                      textAlign: widget.descriptionAlignment ==
+                                              ShowcaseDecriptionAlignment.center
+                                          ? TextAlign.center
+                                          : widget.descriptionAlignment ==
+                                                  ShowcaseDecriptionAlignment
+                                                      .left
+                                              ? TextAlign.start
+                                              : widget.descriptionAlignment ==
+                                                      ShowcaseDecriptionAlignment
+                                                          .right
+                                                  ? TextAlign.end
+                                                  : null,
                                       style: widget.descTextStyle ??
                                           Theme.of(context)
                                               .textTheme
