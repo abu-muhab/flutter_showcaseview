@@ -431,41 +431,6 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
         .size;
     return textPainter;
   }
-
-  String _alignedText(String text, TextStyle style) {
-    if (widget.descriptionAlignment == ShowcaseDecriptionAlignment.none) {
-      return text;
-    }
-
-    final Size textSize = _textSize(text, style);
-    final double maxWidth = textSize.width;
-    final double widthOfSingleSpace = _textSize(' ', style).width;
-
-    final List<String> alignedLines = text.split("\n").map(
-      (String line) {
-        final double lineWidth = _textSize(line, style).width;
-
-        final excessSpace = maxWidth - lineWidth;
-        final numberOfSpaces = (excessSpace / widthOfSingleSpace).round();
-
-        if (widget.descriptionAlignment == ShowcaseDecriptionAlignment.center) {
-          return line
-              .padLeft(line.length + numberOfSpaces ~/ 2)
-              .padRight(line.length + numberOfSpaces - numberOfSpaces ~/ 2);
-        } else if (widget.descriptionAlignment ==
-            ShowcaseDecriptionAlignment.left) {
-          return line.padRight(line.length + numberOfSpaces);
-        } else if (widget.descriptionAlignment ==
-            ShowcaseDecriptionAlignment.right) {
-          return line.padLeft(line.length + numberOfSpaces);
-        } else {
-          return line;
-        }
-      },
-    ).toList();
-
-    return alignedLines.join("\n");
-  }
 }
 
 class _Arrow extends CustomPainter {

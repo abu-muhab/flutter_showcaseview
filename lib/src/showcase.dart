@@ -84,7 +84,7 @@ class Showcase extends StatefulWidget {
     required this.child,
     this.title,
     required this.description,
-    required this.descriptionAlignment,
+    this.descriptionAlignment = ShowcaseDecriptionAlignment.left,
     this.shapeBorder,
     this.overlayColor = Colors.black45,
     this.overlayOpacity = 0.75,
@@ -426,4 +426,4 @@ class _TargetWidget extends StatelessWidget {
   }
 }
 
-enum ShowcaseDecriptionAlignment { left, center, right, none }
+enum ShowcaseDecriptionAlignment { left, center, right }
