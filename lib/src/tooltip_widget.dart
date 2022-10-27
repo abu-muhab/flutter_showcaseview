@@ -24,6 +24,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../showcaseview.dart';
 import 'get_position.dart';
 import 'measure_size.dart';
 
@@ -35,6 +36,7 @@ class ToolTipWidget extends StatefulWidget {
   final Size? screenSize;
   final String? title;
   final String? description;
+  final ShowcaseDecriptionAlignment? descriptionAlignment;
   final TextStyle? titleTextStyle;
   final TextStyle? descTextStyle;
   final Widget? container;
@@ -66,6 +68,7 @@ class ToolTipWidget extends StatefulWidget {
     required this.contentWidth,
     required this.onTooltipTap,
     required this.animationDuration,
+    required this.descriptionAlignment,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
     required this.disableAnimation,
     required this.borderRadius,
@@ -331,6 +334,18 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                                         : const SizedBox(),
                                     Text(
                                       widget.description!,
+                                      textAlign: widget.descriptionAlignment ==
+                                              ShowcaseDecriptionAlignment.center
+                                          ? TextAlign.center
+                                          : widget.descriptionAlignment ==
+                                                  ShowcaseDecriptionAlignment
+                                                      .left
+                                              ? TextAlign.start
+                                              : widget.descriptionAlignment ==
+                                                      ShowcaseDecriptionAlignment
+                                                          .right
+                                                  ? TextAlign.end
+                                                  : null,
                                       style: widget.descTextStyle ??
                                           Theme.of(context)
                                               .textTheme
